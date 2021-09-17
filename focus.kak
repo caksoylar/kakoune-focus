@@ -11,7 +11,7 @@ define-command focus-enable -docstring "Enable selection focusing" %{
             execute-keys <a-semicolon> %opt{focus_context_lines} K
         }
         try %{ invert-lines } catch %{ fail "focus: All lines selected, cannot focus" }
-        execute-keys H
+        execute-keys <a-:>H
 
         set-option window focus_hidden_lines %val{timestamp} "%val{selection_desc}|%opt{focus_separator}"
         try %{
@@ -39,7 +39,7 @@ define-command focus-toggle -docstring "Toggle selection focus" %{
 }
 
 define-command -hidden invert-lines %{
-    execute-keys <a-x><a-s>
+    execute-keys <a-x><a-:>
 
     # sort selections by descriptors
     evaluate-commands %sh{
@@ -47,21 +47,21 @@ define-command -hidden invert-lines %{
         printf "%s\n" "$kak_selections_desc" | tr ' ' '\n' | sort -n -t. | tr '\n' ' '
     }
 
-    # select lines not in selections, then merge contiguous ones
+    # select line intervals outside selections
     evaluate-commands %sh{
         printf 'select'
         eval "set -- $kak_quoted_selections_desc"
         i=1
-        start=${1%%.*}
+        start=${1%%.*}; end=${1#*,}; end=${end%.*}
         shift
         while [ $i -le "$kak_buf_line_count" ]; do
-            if [ $i -lt "$start" ]; then  # not yet at next selection, select line
-                printf ' %s.1,%s.1' $i $i
-                i=$(( i + 1 ))
+            if [ $i -lt "$start" ]; then  # not yet at next selection, select until its beginning
+                printf ' %s.1,%s.1' $i $(( start - 1 ))
+                i=$start
             else  # encountered a selection, skip to its end
-                i=$(( start + 1 ))
+                i=$(( end + 1 ))
                 if [ $# -gt 0 ]; then
-                    start=${1%%.*}
+                    start=${1%%.*}; end=${1#*,}; end=${end%.*}
                     shift
                 else  # all selections done, select until end of buffer
                     start=$(( kak_buf_line_count + 1 ))
@@ -69,5 +69,5 @@ define-command -hidden invert-lines %{
             fi
         done
     }
-    execute-keys <a-x><a-_>
+    execute-keys <a-x>
 }
