@@ -14,7 +14,7 @@ plug "caksoylar/kakoune-focus" config %{
 ```
 
 ## Usage
-Once you have the (ideally multiple) selections you want to focus on, use `focus-enable` to hide the surrounding lines. You can use `focus-disable` to disable this or use `focus-toggle` to toggle it on and off.
+Once you have the (ideally multiple) selections you want to focus on, use `focus-selections` to hide the surrounding lines. You can use `focus-clear` to disable this or use `focus-toggle` to toggle it on and off.
 
 I recommend assigning a mapping for easy access, for example `,<space>` to toggle:
 ```kak

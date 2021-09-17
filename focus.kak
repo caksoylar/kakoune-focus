@@ -3,7 +3,8 @@ declare-option int focus_context_lines 1
 declare-option -hidden range-specs focus_hidden_lines
 declare-option -hidden bool focus_enabled false
 
-define-command focus-enable -docstring "Enable selection focusing" %{
+define-command focus-selections -docstring "Focus on selections" %{
+    set-option window focus_hidden_lines
     evaluate-commands -draft %{
         try %{
             evaluate-commands %sh{ [ "$kak_opt_focus_context_lines" -gt 0 ] || echo fail }
@@ -21,21 +22,20 @@ define-command focus-enable -docstring "Enable selection focusing" %{
             }
         }
 
-        add-highlighter window/focus-hidden replace-ranges focus_hidden_lines
+        try %{ add-highlighter window/focus-hidden replace-ranges focus_hidden_lines }
     }
     echo -markup "{Information}focus: Focused selections"
     set-option window focus_enabled true
 }
 
-define-command focus-disable -docstring "Disable selection focusing" %{
-    set-option window focus_hidden_lines
+define-command focus-clear -docstring "Clear selection focus" %{
     remove-highlighter window/focus-hidden
-    echo -markup "{Information}focus: Disabled focus"
+    echo -markup "{Information}focus: Cleared focus"
     set-option window focus_enabled false
 }
 
 define-command focus-toggle -docstring "Toggle selection focus" %{
-    evaluate-commands %sh{ [ "$kak_opt_focus_enabled" = "true" ] && echo "focus-disable" || echo "focus-enable" }
+    evaluate-commands %sh{ [ "$kak_opt_focus_enabled" = "true" ] && echo "focus-clear" || echo "focus-selections" }
 }
 
 define-command -hidden invert-lines %{
@@ -71,3 +71,6 @@ define-command -hidden invert-lines %{
     }
     execute-keys <a-x>
 }
+
+alias global focus-enable focus-selections
+alias global focus-disable focus-clear
