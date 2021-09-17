@@ -12,7 +12,9 @@ define-command focus-selections -docstring "Focus on selections" %{
             execute-keys <a-semicolon> %opt{focus_context_lines} K
         }
         try %{ invert-lines } catch %{ fail "focus: All lines selected, cannot focus" }
-        execute-keys <a-:>H
+
+        # remove single EOL and end of selection EOL
+        execute-keys <a-:> <a-K>\A\n\z<ret> H
 
         set-option window focus_hidden_lines %val{timestamp} "%val{selection_desc}|%opt{focus_separator}"
         try %{
@@ -69,7 +71,7 @@ define-command -hidden invert-lines %{
             fi
         done
     }
-    execute-keys <a-x>
+    execute-keys <a-x><a-_>
 }
 
 alias global focus-enable focus-selections
