@@ -16,6 +16,9 @@ define-command focus-selections -docstring "Focus on selections" %{
         # remove single EOL and end of selection EOL
         execute-keys <a-:> <a-K>\A\n\z<ret> H
 
+        # remove single line selections
+        execute-keys <a-k>\n<ret>
+
         set-option window focus_hidden_lines %val{timestamp} "%val{selection_desc}|%opt{focus_separator}"
         try %{
             execute-keys <a-space>
