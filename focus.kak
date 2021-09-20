@@ -1,9 +1,16 @@
 declare-option str focus_separator "{Whitespace}────────────────────────────────────────────────────────────────────────────────"
 declare-option int focus_context_lines 1
 declare-option -hidden range-specs focus_hidden_lines
+declare-option -hidden str-list focus_selections
 declare-option -hidden bool focus_enabled false
 
 define-command focus-selections -docstring "Focus on selections" %{
+    # save selections with timestamp using a temporary mark register
+    evaluate-commands -save-regs f %{
+        execute-keys <">fZ
+        set-option window focus_selections %reg{f}
+    }
+
     set-option window focus_hidden_lines
     evaluate-commands -draft %{
         try %{
@@ -33,7 +40,22 @@ define-command focus-selections -docstring "Focus on selections" %{
     set-option window focus_enabled true
 }
 
+define-command focus-extend -docstring "Extend focus area with current selections" %{
+    evaluate-commands -draft -save-regs cp %{
+        # restore previous selections through a temporary mark register and append current ones
+        execute-keys <">cZ
+        try %{
+            set-register p %opt{focus_selections}
+            execute-keys <">pz
+            execute-keys <">c<a-z>a <a-_>
+        }
+
+        focus-selections
+    }
+}
+
 define-command focus-clear -docstring "Clear selection focus" %{
+    set-option window focus_selections
     remove-highlighter window/focus-hidden
     echo -markup "{Information}focus: Cleared focus"
     set-option window focus_enabled false

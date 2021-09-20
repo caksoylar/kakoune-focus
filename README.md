@@ -21,6 +21,18 @@ I recommend assigning a mapping for easy access, for example `,<space>` to toggl
 map global user <space> ': focus-toggle<ret>' -docstring "toggle selections focus"
 ```
 
+You can also extend the focus area to include your current selections using `focus-extend`, which can be called multiple times. Using this feature you can even create a live-updating focus area that extends itself to lines you have visited. For example you can define and use commands like below:
+```kak
+define-command focus-live-enable %{
+    focus-selections
+    hook -group focus window NormalIdle .* %{ focus-extend }
+}
+define-command focus-live-disable %{
+    remove-hooks window focus
+    focus-clear
+}
+```
+
 ## Configuration
 There are a couple of options you can configure:
 - `focus_separator (str)`: What string to use as the separator to replace hidden lines, can use markup strings `:doc faces markup-strings`
