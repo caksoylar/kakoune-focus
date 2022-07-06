@@ -66,7 +66,7 @@ define-command focus-toggle -docstring "Toggle selection focus" %{
 }
 
 define-command -hidden invert-lines %{
-    execute-keys <a-x><a-:>
+    execute-keys x<a-:>
 
     # sort selections by descriptors
     evaluate-commands %sh{
@@ -96,7 +96,7 @@ define-command -hidden invert-lines %{
             fi
         done
     }
-    execute-keys <a-x><a-_>
+    execute-keys x<a-_>
 }
 
 alias global focus-enable focus-selections
