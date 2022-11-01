@@ -1,4 +1,8 @@
 # kakoune-focus
+
+> **Warning**
+> This branch is deprecated now that there is a new Kakoune release, please switch back to using the `master` branch.
+
 `kakoune-focus` is a plugin to let you work on multiple selections more efficiently by hiding lines that are far from your selections using Kakoune's `replace-ranges` highlighter (`:doc highlighters specs-highlighters`).
 
 ![demo](https://caksoylar.github.io/kakoune-focus/focus.gif)
