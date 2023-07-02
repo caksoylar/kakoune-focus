@@ -28,7 +28,7 @@ define-command focus-selections -docstring "Focus on selections" %{
 
         set-option window focus_hidden_lines %val{timestamp} "%val{selection_desc}|%opt{focus_separator}"
         try %{
-            execute-keys <a-space>
+            execute-keys <a-,>
             evaluate-commands -itersel %{
                 set-option -add window focus_hidden_lines "%val{selection_desc}|%opt{focus_separator}"
             }
