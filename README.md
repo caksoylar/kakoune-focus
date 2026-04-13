@@ -1,9 +1,6 @@
 # kakoune-focus
 `kakoune-focus` is a plugin to let you work on multiple selections more efficiently by hiding lines that are far from your selections using Kakoune's `replace-ranges` highlighter (`:doc highlighters specs-highlighters`).
 
-> **Note**
-> This plugin requires [Kakoune release 2022.10.31](https://github.com/mawww/kakoune/releases/tag/v2022.10.31) or a revision after the breaking change at [mawww/kakoune@ef8a11b](https://github.com/mawww/kakoune/commit/ef8a11b3dbefb8a1222974a8c34e15fa006d56e0).
-
 ![demo](https://caksoylar.github.io/kakoune-focus/focus.gif)
 
 ## Installation
@@ -42,7 +39,7 @@ There are a couple of options you can configure:
 - `focus_context_lines (int)`: How many lines of context to preserve above and below selections (default: 1)
 
 ## Caveats
-Due to [a Kakoune shortcoming](https://github.com/mawww/kakoune/issues/3644) with the `replace-ranges` highlighter, some lines can be visually cut off from the bottom after focusing. This seems to be an issue especially when long spans of lines are hidden and soft line wrapping is enabled with the `wrap` highlighter.
+If you are using a Kakoune version before `v2026.04.12`, due to [a Kakoune shortcoming](https://github.com/mawww/kakoune/issues/3644) with the `replace-ranges` highlighter, some lines can be visually cut off from the bottom after focusing. This seems to be an issue especially when long spans of lines are hidden and soft line wrapping is enabled with the `wrap` highlighter.
 
 ## License
 MIT
